@@ -135,7 +135,12 @@ class admin_plugin_move_list extends DokuWiki_Admin_Plugin
                 if (useHeading('navigation')) {
                     // get page title
                     $title = $page['title'];
-                } else {
+
+                }
+
+                // If the page has no title
+                // or we don't use navigation
+                if (!$title) {
                     $title = noNSorNS($pageId);
                 }
 
@@ -145,7 +150,13 @@ class admin_plugin_move_list extends DokuWiki_Admin_Plugin
                 } else {
                     $checked = array();
                 }
-                $form->addElement(form_makeCheckboxField('pages[]', $pageId, $title, $pageId, '', $checked));
+                $url = tpl_link(
+                    wl($pageId),
+                    ucfirst($title), // First letter upper case
+                    'title="' . $title . '"',
+                    $return = true
+                );
+                $form->addElement(form_makeCheckboxField('pages[]', $pageId, $url, $pageId, '', $checked));
                 $form->addElement('<br />');
             }
             $form->addElement('<br />');
