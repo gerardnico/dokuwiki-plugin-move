@@ -40,7 +40,9 @@ class admin_plugin_move_list extends DokuWiki_Admin_Plugin
      */
     public function getMenuText($language)
     {
-        $label = $this->getLang('menu_list');
+        global $ID;
+
+        $label = $this->getLang('menu_list').' ('.getNs($ID).')';
         if ($this->plan->isCommited()) $label .= ' ' . $this->getLang('inprogress');
         return $label;
         // if return false; it will not show in Admin menu
@@ -93,16 +95,17 @@ class admin_plugin_move_list extends DokuWiki_Admin_Plugin
 
         $treelink = wl($ID, array('do' => 'admin', 'page' => 'move_tree'));
         $mainlink = wl($ID, array('do' => 'admin', 'page' => 'move_main'));
-        echo '<p id="plugin_move__treelink">';
+        echo '<p id="plugin_move__link">';
         printf($this->getLang('treelink'), $treelink);
-        printf(" or the <a href=\"%s\">simple move manager</a>.", $mainlink);
+        echo '<br />';
+        echo '<br />';
+        printf("If you want to rename a page or move a whole namespace, go to the <a href=\"%s\">main move manager</a>.", $mainlink);
         echo '</p>';
 
         echo '<noscript><div class="error">' . $this->getLang('noscript') . '</div></noscript>';
 
         echo '<div id="plugin_move__list">';
 
-        echo '<div class="move_list">';
         echo '<h3>' . $this->getLang('pages_to_move') . '</h3>';
 
 

@@ -7,7 +7,7 @@
  */
 
 $lang['menu']       = 'Move pages and namespaces';
-$lang['menu_list']  = 'Move pages of a namespace';
+$lang['menu_list']  = 'Move pages of the current namespace';
 $lang['inprogress'] = '(move pending)';
 $lang['treelink']   = 'Alternatively to this simple form you can manage complex restructuring of your wiki using the <a href="%s">tree-based move manager</a>.';
 
