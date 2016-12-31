@@ -148,7 +148,7 @@ class admin_plugin_move_list extends DokuWiki_Admin_Plugin
             $form->addElement('<br />');
 
             $form->addElement('<h3>' . $this->getLang('namespace_destination') . '</h3>');
-            $form->addElement(form_makeTextField('dst', $nameSpacePath, $this->getLang('namespace_destination_new'), '', 'indent'));
+            $form->addElement(form_makeTextField('namespace_destination', $nameSpacePath, $this->getLang('namespace_destination_new'), '', 'indent'));
             $form->addElement('<br />');
             $form->addElement('<br />');
 
@@ -178,7 +178,7 @@ class admin_plugin_move_list extends DokuWiki_Admin_Plugin
      * @param $namespace The container of the pages
      * @return array An array of the pages for the namespace
      */
-    function getNamespaceChildren($namespace)
+    protected function getNamespaceChildren($namespace)
     {
         require_once(DOKU_INC . 'inc/search.php');
         global $conf;
@@ -202,5 +202,31 @@ class admin_plugin_move_list extends DokuWiki_Admin_Plugin
         search($data, $conf['datadir'], 'search_universal', $search_opts, $ns, $lvl = 1, $sort = 'natural');
 
         return $data;
+    }
+
+    /**
+     * searches media files linked in the given page
+     * returns an array of media id's
+     *
+     * Adapted From https://github.com/ssahara/dw-plugin-medialist/blob/master/helper.php
+     *
+     */
+    static function getMediasIdFromPage($id) {
+        $medias = array();
+
+        if (auth_quickaclcheck($id) >= AUTH_READ) {
+            // get the instructions
+            $ins = p_cached_instructions(wikiFN($id), true, $id);
+            // get linked media files
+            foreach ($ins as $node) {
+                if ($node[0] == 'internalmedia') {
+                    $id = cleanID($node[1][0]);
+                    $fn = mediaFN($id);
+                    if (!file_exists($fn)) continue;
+                    $medias[] = $id;
+                }
+            }
+        }
+        return array_unique($medias, SORT_REGULAR);
     }
 }

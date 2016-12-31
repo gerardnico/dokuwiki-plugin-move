@@ -156,31 +156,36 @@ class admin_plugin_move_main extends DokuWiki_Admin_Plugin {
         } elseif($INPUT->has('list')) {
             // input came from the move list page {@link admin_plugin_move_list}
 
-            $dst = trim($INPUT->str('dst'));
-            if($dst == '') {
+            $namespace_dst = trim($INPUT->str('namespace_destination'));
+            if($namespace_dst == '') {
                 msg($this->getLang('nodst'), -1);
                 return false;
             }
 
             if($INPUT->has('pages')) {
                 // An array of pages chosen by the checkboxes
-                $pages = $INPUT->arr('pages');
-                foreach($pages as $page){
-                    $pageName = noNs($page);
-                    $newId = $dst.':'.$pageName;
-                    if($INPUT->str('type') == 'both') {
-                        $this->plan->addPageMove($page, $newId);
-                        $this->plan->addMediaMove($page, $newId);
-                    } else if($INPUT->str('type') == 'page') {
-                        $this->plan->addPageMove($page, $newId);
-                    } else if($INPUT->str('type') == 'media') {
-                        $this->plan->addMediaMove($page, $newId);
+                $pagesId = $INPUT->arr('pages');
+                foreach($pagesId as $pageId){
+
+                    if($INPUT->str('type') == 'both' or $INPUT->str('type') == 'page') {
+                        $pageName = noNs($pageId);
+                        $newPageId = $namespace_dst.':'.$pageName;
+                        $this->plan->addPageMove($pageId, $newPageId);
+                    }
+
+                    if($INPUT->str('type') == 'both' or $INPUT->str('type') == 'media') {
+                        $mediasId = admin_plugin_move_list::getMediasIdFromPage($pageId);
+                        foreach ($mediasId as $mediaId) {
+                            $mediaName = noNs($mediaId);
+                            $newMediaId = $namespace_dst.':'.$mediaName;
+                            $this->plan->addMediaMove($mediaId, $newMediaId);
+                        }
                     }
                 }
                 $this->plan->commit();
                 return true;
             } else {
-                echo 'No Pages parameter';
+                msg('Internal No \'Pages\' parameter from the form', -1);
                 return false;
             }
 
