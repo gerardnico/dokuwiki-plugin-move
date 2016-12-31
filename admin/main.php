@@ -128,6 +128,7 @@ class admin_plugin_move_main extends DokuWiki_Admin_Plugin {
             }
             $this->plan->commit();
             return true;
+
         } elseif($INPUT->has('json')) {
             // input came via JSON from tree manager
             $json = new JSON(JSON_LOOSE_TYPE);
@@ -151,8 +152,39 @@ class admin_plugin_move_main extends DokuWiki_Admin_Plugin {
 
             $this->plan->commit();
             return true;
-        }
 
+        } elseif($INPUT->has('list')) {
+            // input came from the move list page {@link admin_plugin_move_list}
+
+            $dst = trim($INPUT->str('dst'));
+            if($dst == '') {
+                msg($this->getLang('nodst'), -1);
+                return false;
+            }
+
+            if($INPUT->has('pages')) {
+                // An array of pages chosen by the checkboxes
+                $pages = $INPUT->arr('pages');
+                foreach($pages as $page){
+                    $pageName = noNs($page);
+                    $newId = $dst.':'.$pageName;
+                    if($INPUT->str('type') == 'both') {
+                        $this->plan->addPageMove($page, $newId);
+                        $this->plan->addMediaMove($page, $newId);
+                    } else if($INPUT->str('type') == 'page') {
+                        $this->plan->addPageMove($page, $newId);
+                    } else if($INPUT->str('type') == 'media') {
+                        $this->plan->addMediaMove($page, $newId);
+                    }
+                }
+                $this->plan->commit();
+                return true;
+            } else {
+                echo 'No Pages parameter';
+                return false;
+            }
+
+        }
         return false;
     }
 

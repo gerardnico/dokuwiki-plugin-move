@@ -7,6 +7,7 @@
  */
 
 $lang['menu']       = 'Move pages and namespaces';
+$lang['menu_list']  = 'Move pages of a namespace';
 $lang['inprogress'] = '(move pending)';
 $lang['treelink']   = 'Alternatively to this simple form you can manage complex restructuring of your wiki using the <a href="%s">tree-based move manager</a>.';
 
@@ -61,8 +62,11 @@ $lang['autorewrite']          = 'Rewrite links right after the move completed';
 $lang['move_pages']           = 'Pages';
 $lang['move_media']           = 'Media files';
 $lang['move_media_and_pages'] = 'Pages and media files';
+$lang['namespace_destination']= 'Namespace destination';
+$lang['namespace_destination_new']= 'Target Namespace';
 $lang['nodst']                = 'No new name given';
 $lang['noaction']             = 'There were no moves defined';
+$lang['pages_to_move']        = 'Pages to move';
 
 // Rename feature
 $lang['renamepage']       = 'Rename Page';
