@@ -42,7 +42,14 @@ class admin_plugin_move_list extends DokuWiki_Admin_Plugin
     {
         global $ID;
 
-        $label = $this->getLang('menu_list').' ('.getNs($ID).')';
+        $currentNamespace = getNs($ID);
+
+        // No namespace if we are in the root
+        if (!$currentNamespace) {
+            $currentNamespace = 'root';
+        }
+
+        $label = $this->getLang('menu_list').' ('. $currentNamespace .')';
         if ($this->plan->isCommited()) $label .= ' ' . $this->getLang('inprogress');
         return $label;
         // if return false; it will not show in Admin menu
