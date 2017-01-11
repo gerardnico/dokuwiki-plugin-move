@@ -132,6 +132,14 @@ class admin_plugin_move_list extends DokuWiki_Admin_Plugin
             // List
             $form->addHidden('list', '');
 
+            // Enclose the checkbox in a Table
+            $form->addElement('<table class="table">');
+            $form->addElement('<tr>');
+            $form->addElement('<th>');
+            $form->addElement('<input name="CheckAll" class="checkbox-manager" value="1" type="checkbox">'); // A check all Checkbox
+            $form->addElement(' Select all Pages</th>');
+            $form->addElement('</tr>');
+
             $nameSpacePath = getNS($ID); // The complete path to the directory
             $pagesOfNamespace = $this->getNamespaceChildren($nameSpacePath);
             foreach ($pagesOfNamespace as $page) {
@@ -153,9 +161,9 @@ class admin_plugin_move_list extends DokuWiki_Admin_Plugin
 
                 // Checked or not
                 if ($ID == $pageId) {
-                    $checked = array('checked' => 'checked');
+                    $checked = 'checked="checked"';
                 } else {
-                    $checked = array();
+                    $checked = '';
                 }
                 $url = tpl_link(
                     wl($pageId),
@@ -163,9 +171,13 @@ class admin_plugin_move_list extends DokuWiki_Admin_Plugin
                     'title="' . $title . '"',
                     $return = true
                 );
-                $form->addElement(form_makeCheckboxField('pages[]', $pageId, $url, $pageId, '', $checked));
-                $form->addElement('<br />');
+                $form->addElement('<tr>');
+                $form->addElement('<td>');
+                $form->addElement('<input id="'.$pageId.'" name="pages[]" class="checkbox-page" value="'.$pageId.'" type="checkbox" '.$checked.'>');
+                $form->addElement(' '.$url.'</td>');
+                $form->addElement('</tr>');
             }
+            $form->addElement('</table>');
             $form->addElement('<br />');
 
             $form->addElement('<h3>' . $this->getLang('namespace_destination') . '</h3>');

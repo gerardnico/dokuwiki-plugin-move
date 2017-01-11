@@ -55,12 +55,12 @@ class admin_plugin_move_main extends DokuWiki_Admin_Plugin {
      * Handle the input
      */
     function handle() {
-        global $INPUT;
 
         // create a new plan if possible and sufficient data was given
         $this->createPlanFromInput();
 
         // handle workflow button presses
+        global $INPUT;
         if($this->plan->isCommited()) {
             helper_plugin_move_rewrite::addLock(); //todo: right place?
             switch($INPUT->str('ctl')) {
@@ -72,9 +72,21 @@ class admin_plugin_move_main extends DokuWiki_Admin_Plugin {
                     break;
                 case 'abort':
                     $this->plan->abort();
+
+                    // Redirect
+                    if ($this->plan->getOption('move_admin_page')=='move_list') {
+                        $page = 'move_list';
+                    } else {
+                        $page = 'move_main';
+                    }
+                    global $ID;
+
+                    send_redirect(wl($ID , 'do=admin&page='.$page,true,'&'));
+
                     break;
             }
         }
+
     }
 
     /**
@@ -96,6 +108,7 @@ class admin_plugin_move_main extends DokuWiki_Admin_Plugin {
      * @return bool
      */
     protected function createPlanFromInput() {
+
         global $INPUT;
         global $ID;
 
@@ -130,6 +143,7 @@ class admin_plugin_move_main extends DokuWiki_Admin_Plugin {
             return true;
 
         } elseif($INPUT->has('json')) {
+
             // input came via JSON from tree manager
             $json = new JSON(JSON_LOOSE_TYPE);
             $data = $json->decode($INPUT->str('json'));
@@ -155,12 +169,9 @@ class admin_plugin_move_main extends DokuWiki_Admin_Plugin {
 
         } elseif($INPUT->has('list')) {
             // input came from the move list page {@link admin_plugin_move_list}
+            $this->plan->setOption('move_admin_page', 'move_list');
 
-            $namespace_dst = trim($INPUT->str('namespace_destination'));
-            if($namespace_dst == '') {
-                msg($this->getLang('nodst'), -1);
-                return false;
-            }
+            $namespace_dst = trim($INPUT->str('namespace_destination')); // may be null for the root
 
             if($INPUT->has('pages')) {
                 // An array of pages chosen by the checkboxes

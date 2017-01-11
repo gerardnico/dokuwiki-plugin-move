@@ -10,4 +10,5 @@ jQuery(function() {
     /* DOKUWIKI:include script/progress.js */
     /* DOKUWIKI:include script/tree.js */
     /* DOKUWIKI:include script/rename.js */
+    /* DOKUWIKI:include script/admin_list.js */
 });
