@@ -30,7 +30,7 @@ move_list = {
 // Add the event handler
 window.addEventListener("load",
     function () {
-        checkBoxManager = document.querySelector("input.checkbox-manager")
+        checkBoxManager = document.querySelector("input.checkbox-manager");
         // If the checkBoxManager is on the page
         if (checkBoxManager) {
             checkBoxManager.onclick =
