@@ -30,13 +30,17 @@ move_list = {
 // Add the event handler
 window.addEventListener("load",
     function () {
-        document.querySelector("input.checkbox-manager").onclick =
-            function (event) {
-                if (event.target.checked) {
-                    move_list.checkAll();
-                } else {
-                    move_list.unCheckAll();
+        checkBoxManager = document.querySelector("input.checkbox-manager")
+        // If the checkBoxManager is on the page
+        if (checkBoxManager) {
+            checkBoxManager.onclick =
+                function (event) {
+                    if (event.target.checked) {
+                        move_list.checkAll();
+                    } else {
+                        move_list.unCheckAll();
+                    }
                 }
-            }
+        }
     }
 );
