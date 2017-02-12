@@ -56,6 +56,7 @@ class action_plugin_move_progress extends DokuWiki_Action_Plugin {
             $todo               = $plan->nextStep($INPUT->bool('skip'));
             $return['progress'] = $plan->getProgress();
             $return['error']    = $plan->getLastError();
+            $return['feedback'] = $plan->getStepFeedback();
             if($todo === 0) $return['complete'] = true;
         }
 

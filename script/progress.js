@@ -8,6 +8,9 @@ jQuery('#plugin_move__progress').each(function () {
         value: $progressbar.data('progress')
     });
 
+    // The counter added to the feedback
+    var $feedbackCounter = 0;
+
     /**
      * Set visibility of buttons according to current error state
      *
@@ -47,7 +50,14 @@ jQuery('#plugin_move__progress').each(function () {
                 skip: skip
             },
             function (data) {
+
                 $progressbar.progressbar('option', 'value', data.progress);
+                // Add the feedback
+                var $feedbackElement = jQuery("#plugin_move__feedback_content");
+                for (var i = 0; i < data.feedback.length; i++) {
+                    $feedbackCounter++;
+                    $feedbackElement.prepend("<p>"+$feedbackCounter+" - "+data.feedback[i]+"</p>");
+                }
                 $this.find('.controls img').addClass('hide');
 
                 if (data.error) {
@@ -55,9 +65,16 @@ jQuery('#plugin_move__progress').each(function () {
                     setButtons(true);
                 } else if (data.complete) {
                     $progressbar.progressbar('option', 'value', 100);
-                    // redirect to start page
-                    alert(LANG.plugins.move.complete);
-                    window.location.href = DOKU_BASE;
+
+                    // Add the finish feedback
+                    $feedbackElement.prepend("<p>"+($feedbackCounter+1)+" - Finish</p>");
+
+                    // Cache the abort
+                    $this.find('.ctlfrm-abort').addClass('hide');
+
+                    // Show the navigation button to be able to go away
+                    jQuery("#plugin_move__navigation_home").removeClass('hide');
+
                 } else {
                     // do it again
                     nextStep(skip);
@@ -74,6 +91,9 @@ jQuery('#plugin_move__progress').each(function () {
 
         // move in progress, no more preview
         jQuery('#plugin_move__preview').remove();
+
+        // the feedback become visible
+        jQuery('#plugin_move__feedback_header').removeClass("hide");
 
         // should the next error be skipped?
         var skip = e.target.form.skip.value;

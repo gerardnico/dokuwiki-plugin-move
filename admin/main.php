@@ -268,6 +268,7 @@ class admin_plugin_move_main extends DokuWiki_Admin_Plugin {
         }
         echo '</div>';
 
+
         // display all buttons but toggle visibility according to state
         echo '<p></p>';
         echo '<div class="controls">';
@@ -277,6 +278,15 @@ class admin_plugin_move_main extends DokuWiki_Admin_Plugin {
         $this->btn('skip', $this->plan->getLastError());
         $this->btn('continue', $this->plan->inProgress() && !$this->plan->getLastError());
         $this->btn('abort');
+        echo '</div>';
+
+        // The navigation button that will give opportunity to the user to navigate at the end
+        echo '<a id="plugin_move__navigation_home" class="btn hide" href="/">Go to the home page</a>';
+
+        // A container for the feedback when the plugin goes through each step
+        // The feedback is coming with new event on top
+        echo '<h2 id="plugin_move__feedback_header" class="hide">Feedback</h2>';
+        echo '<div id="plugin_move__feedback_content" class="level2">';
         echo '</div>';
 
         echo '</div>';

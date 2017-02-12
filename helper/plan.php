@@ -50,6 +50,14 @@ class helper_plugin_move_plan extends DokuWiki_Plugin {
     protected $plan = array();
 
     /**
+     * @var array the log of a step.
+     * This variable is used in all stepThrough function to catch the log.
+     * Ultimately, the log is used to return a feedback with the function getStepFeedback
+     * This variable is reset in the function nextStep
+     */
+    protected $step_log = array();
+
+    /**
      * @var array temporary holder of document lists
      */
     protected $tmpstore = array(
@@ -366,6 +374,9 @@ class helper_plugin_move_plan extends DokuWiki_Plugin {
 
         helper_plugin_move_rewrite::addLock();
 
+        // Reset the step log
+        $this->step_log = array();
+
         if(@filesize($this->files['pagelist']) > 1) {
             $todo = $this->stepThroughDocuments(self::TYPE_PAGES, $skip);
             if($todo === false) return $this->storeError();
@@ -469,11 +480,13 @@ class helper_plugin_move_plan extends DokuWiki_Plugin {
             $file    = $this->files['pagelist'];
             $mark    = 'P';
             $call    = 'movePage';
+            $type_desc = 'page';
             $items_run_counter = 'pages_run';
         } else {
             $file    = $this->files['medialist'];
             $mark    = 'M';
             $call    = 'moveMedia';
+            $type_desc = 'media';
             $items_run_counter = 'media_run';
         }
 
@@ -495,6 +508,8 @@ class helper_plugin_move_plan extends DokuWiki_Plugin {
                 if(!$this->MoveOperator->$call($src, $dst)) {
                     $log .= $this->build_log_line($mark, $src, $dst, false); // FAILURE!
 
+                    $this->step_log[] = "The move of the ".$type_desc." (".$src.") to (".$dst.") has failed";
+
                     // automatically skip this item only if wanted...
                     if(!$this->options['autoskip']) {
                         // ...otherwise abort the operation
@@ -504,7 +519,9 @@ class helper_plugin_move_plan extends DokuWiki_Plugin {
                     }
                 } else {
                     $log .= $this->build_log_line($mark, $src, $dst, true); // SUCCESS!
+                    $this->step_log[] = "The move of the ".$type_desc." (".$src.") to (".$dst.") was done.";
                 }
+
             }
 
             /*
@@ -542,6 +559,9 @@ class helper_plugin_move_plan extends DokuWiki_Plugin {
 
             // rewrite it
             $Rewriter->rewritePage($page);
+
+            // Update the step log
+            $this->step_log[] = "The page (".$page.") has been rewritten.";
 
             // update the list file
             ftruncate($doclist, ftell($doclist));
@@ -650,6 +670,17 @@ class helper_plugin_move_plan extends DokuWiki_Plugin {
         $this->saveOptions();
 
         return false;
+    }
+
+    /**
+     * Return the feedback
+     *
+     * @return array
+     *
+     */
+    public function getStepFeedback()
+    {
+        return $this->step_log;
     }
 
     /**
