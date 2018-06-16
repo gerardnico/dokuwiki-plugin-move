@@ -835,8 +835,13 @@ class helper_plugin_move_plan extends DokuWiki_Plugin {
         );
 
         foreach($lists as $store => $file) {
-            // anything to do?
-            $count = count($this->tmpstore[$store]);
+
+            // The count of the next instruction will fail if the variable is not in the array
+            // as it returns null
+            $tmpStoreStore = $this->tmpstore[$store];
+            if ($tmpStoreStore==null) continue;
+
+            $count = count($tmpStoreStore);
             if(!$count) continue;
 
             // prepare and save content
@@ -952,13 +957,15 @@ class helper_plugin_move_plan extends DokuWiki_Plugin {
         global $MSG;
 
         $now = time();
-        $date   = date('Y-m-d H:i:s', $now); // for human readability
+        $date = date('Y-m-d H:i:s', $now); // for human readability
+        $msg = '';
         if($success) {
             $ok  = 'success';
-            $msg = '';
         } else {
-            $ok  = 'failed';
-            $msg = $MSG[count($MSG) - 1]['msg']; // get detail from message array
+            $ok = 'failed';
+            if ($MSG != null) {
+                $msg = $MSG[count($MSG) - 1]['msg']; // get detail from message array
+            }
         }
 
         $log = "$now\t$date\t$type\t$from\t$to\t$ok\t$msg\n";

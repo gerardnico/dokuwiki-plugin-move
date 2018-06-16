@@ -204,6 +204,10 @@ EOT;
 [[parent_ns/new_page|parent_ns/new_page]]
 [[/start|/start]]
 EOT;
+	    // The end of line on Windows may fails this test
+	    $expectedContent = str_replace("\r\n","\n",$expectedContent);
+        $newContent = str_replace("\r\n","\n",$newContent);
+
 	    $this->assertEquals($expectedContent, $newContent);
 
 	    $newContent = rawWiki($this->parentBacklinkingId);
@@ -231,6 +235,10 @@ EOT;
 [[parent_ns/new_page|parent_ns/new_page]]
 [[/start|/start]]
 EOT;
+        // The end of line on Windows may fails this test
+        $expectedContent = str_replace("\r\n","\n",$expectedContent);
+        $newContent = str_replace("\r\n","\n",$newContent);
+
 	    $this->assertEquals($expectedContent, $newContent);
 
 	    $newContent = rawWiki($this->currentNsBacklinkingId);
@@ -262,6 +270,10 @@ EOT;
 [[parent_ns/new_page|parent_ns/new_page]]
 [[/start|/start]]
 EOT;
+        // The end of line on Windows may fails this test
+        $expectedContent = str_replace("\r\n","\n",$expectedContent);
+        $newContent = str_replace("\r\n","\n",$newContent);
+
 	    $this->assertEquals($expectedContent, $newContent);
 
 	    $newContent = rawWiki($this->otherBacklinkingId);
@@ -288,6 +300,10 @@ EOT;
 [[parent_ns/new_page|parent_ns/new_page]]
 [[/start|/start]]
 EOT;
+        // The end of line on Windows may fails this test
+        $expectedContent = str_replace("\r\n","\n",$expectedContent);
+        $newContent = str_replace("\r\n","\n",$newContent);
+
 	    $this->assertEquals($expectedContent, $newContent);
 	}
 
@@ -320,6 +336,11 @@ EOT;
 [[parent_ns/new_page|parent_ns/new_page]]
 [[/start|/start]]
 EOT;
+
+        // The end of line on Windows may fails this test
+        $expectedContent = str_replace("\r\n","\n",$expectedContent);
+        $newContent = str_replace("\r\n","\n",$newContent);
+
 	    $this->assertEquals($expectedContent, $newContent);
 
 	    $newContent = rawWiki($this->parentBacklinkingId);
@@ -347,6 +368,10 @@ EOT;
 [[parent_ns/new_page|parent_ns/new_page]]
 [[/start|/start]]
 EOT;
+        // The end of line on Windows may fails this test
+        $expectedContent = str_replace("\r\n","\n",$expectedContent);
+        $newContent = str_replace("\r\n","\n",$newContent);
+
 	    $this->assertEquals($expectedContent, $newContent);
 
 	    $newContent = rawWiki($this->currentNsBacklinkingId);
@@ -378,6 +403,9 @@ EOT;
 [[parent_ns/new_page|parent_ns/new_page]]
 [[/start|/start]]
 EOT;
+        // The end of line on Windows may fails this test
+        $expectedContent = str_replace("\r\n","\n",$expectedContent);
+        $newContent = str_replace("\r\n","\n",$newContent);
 	    $this->assertEquals($expectedContent, $newContent);
 
 	    $newContent = rawWiki($this->otherBacklinkingId);
@@ -404,6 +432,11 @@ EOT;
 [[parent_ns/new_page|parent_ns/new_page]]
 [[/start|/start]]
 EOT;
+
+        // The end of line on Windows may fails this test
+        $expectedContent = str_replace("\r\n","\n",$expectedContent);
+        $newContent = str_replace("\r\n","\n",$newContent);
+
 	    $this->assertEquals($expectedContent, $newContent);
 	}
 
@@ -437,6 +470,11 @@ EOT;
 [[parent_ns/new_page|parent_ns/new_page]]
 [[/start|/start]]
 EOT;
+
+        // The end of line on Windows may fails this test
+        $expectedContent = str_replace("\r\n","\n",$expectedContent);
+        $newContent = str_replace("\r\n","\n",$newContent);
+
 	    $this->assertEquals($expectedContent, $newContent);
 
 	    // page is moved to same NS as backlinking page (parent_ns)
@@ -465,6 +503,11 @@ EOT;
 [[parent_ns/new_page|parent_ns/new_page]]
 [[/start|/start]]
 EOT;
+
+        // The end of line on Windows may fails this test
+        $expectedContent = str_replace("\r\n","\n",$expectedContent);
+        $newContent = str_replace("\r\n","\n",$newContent);
+
 	    $this->assertEquals($expectedContent, $newContent);
 
 	    $newContent = rawWiki($this->currentNsBacklinkingId);
@@ -496,6 +539,11 @@ EOT;
 [[parent_ns/new_page|parent_ns/new_page]]
 [[/start|/start]]
 EOT;
+
+        // The end of line on Windows may fails this test
+        $expectedContent = str_replace("\r\n","\n",$expectedContent);
+        $newContent = str_replace("\r\n","\n",$newContent);
+
 	    $this->assertEquals($expectedContent, $newContent);
 
 	    $newContent = rawWiki($this->otherBacklinkingId);
@@ -522,6 +570,11 @@ EOT;
 [[parent_ns/new_page|parent_ns/new_page]]
 [[/start|/start]]
 EOT;
+
+        // The end of line on Windows may fails this test
+        $expectedContent = str_replace("\r\n","\n",$expectedContent);
+        $newContent = str_replace("\r\n","\n",$newContent);
+
 	    $this->assertEquals($expectedContent, $newContent);
 	}
 
