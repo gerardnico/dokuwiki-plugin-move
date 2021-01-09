@@ -56,9 +56,8 @@ class helper_plugin_move_rewrite extends DokuWiki_Plugin {
         }
         */
 
-        $metaPluginMove = $all_meta[self::METAKEY];
-        // The value of the metaPluginMove may be an empty string, we test then if it's an array
-        $meta = isset($metaPluginMove) && is_array($metaPluginMove) ? $metaPluginMove : array();
+        // discard missing or empty array or string
+        $meta = !empty($all_meta[self::METAKEY]) ? $all_meta[self::METAKEY] : array();
         if(!isset($meta['origin'])) {
             $meta['origin'] = '';
         }
